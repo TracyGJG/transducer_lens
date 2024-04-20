@@ -1,6 +1,6 @@
-import { range } from './utils.js';
-import { lensFn } from './lenses.js';
-import { composeTransducers, filter, mapper } from './transducer.js';
+import { range } from '../libraries/utils.js';
+import { lensFn } from '../libraries/lenses.js';
+import { composeTransducers, filter, mapper } from '../libraries/transducer.js';
 
 // ==========================================================
 

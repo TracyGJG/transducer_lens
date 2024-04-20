@@ -1,10 +1,10 @@
-import { append, compose, logger } from '../investigation/utils.js';
+import { append, compose, logger } from '../libraries/utils.js';
 import {
   conditional,
   extract,
   filter,
   mapper,
-} from '../investigation/transducer.js';
+} from '../libraries/transducer.js';
 
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);

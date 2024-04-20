@@ -1,5 +1,10 @@
-import { append, compose, logger } from './utils.js';
-import { conditional, extract, filter, mapper } from './transducer.js';
+import { append, compose, logger } from '../libraries/utils.js';
+import {
+  conditional,
+  extract,
+  filter,
+  mapper,
+} from '../libraries/transducer.js';
 
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);

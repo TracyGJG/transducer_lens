@@ -16,8 +16,10 @@ export function conditional(conditionFn) {
 }
 
 export function filter(...predicateFns) {
-  return rf => (acc, val) =>
-    predicateFns.every(func => func(val)) ? rf(acc, val) : (val, acc);
+  return rf => (acc, val) => {
+    const result = predicateFns.every(func => func(val)) ? rf(acc, val) : acc;
+    return result;
+  };
 }
 
 export function extract(extractArray) {

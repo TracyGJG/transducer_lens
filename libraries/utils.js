@@ -10,11 +10,11 @@ export function compose(...funcs) {
 export function logger(name, func = _ => _) {
   return x => {
     const y = func(x);
-    console.log('\t%s: %s => %s', name, JSON.stringify(x), JSON.stringify(y));
+    console.log(`\t${name}: ${JSON.stringify(x)} => ${JSON.stringify(y)}`);
     return y;
   };
 }
 
 export function range(max, min = 0, step = 1) {
-  return Array.from({ length: max / step }, (_, i) => min + i * step);
+  return Array.from({ length: max }, (_, i) => min + i * step);
 }
