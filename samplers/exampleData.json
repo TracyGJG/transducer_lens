@@ -1,0 +1,78 @@
+{
+  "customers": [
+    {
+      "customerId": "cust_0001",
+      "companyName": "Customer One",
+      "deploymentPreference": "1st Class Postage"
+    },
+    {
+      "customerId": "cust_0002",
+      "companyName": "Customer Two",
+      "deploymentPreference": "2nd Class Postage"
+    },
+    {
+      "customerId": "cust_0003",
+      "companyName": "Customer Three",
+      "deploymentPreference": "Collection"
+    }
+  ],
+  "printJobs": [
+    { "jobId": "job_0001", "customerId": "cust_0001", "jobValue": 47500 },
+    { "jobId": "job_0002", "customerId": "", "jobValue": 50000 },
+    { "jobId": "job_0003", "customerId": "cust_0002", "jobValue": 45000 },
+    { "jobId": "job_0004", "customerId": "cust_0002", "jobValue": 45000 },
+    { "jobId": "job_0005", "customerId": "cust_0003", "jobValue": 40000 },
+    { "jobId": "job_0006", "customerId": "", "jobValue": 50000 },
+
+    { "jobId": "job_0007", "customerId": "cust_0001", "jobValue": 47500 },
+    { "jobId": "job_0008", "customerId": "cust_0001", "jobValue": 47500 },
+    { "jobId": "job_0009", "customerId": "cust_0002", "jobValue": 45000 },
+    { "jobId": "job_0010", "customerId": "", "jobValue": 50000 },
+
+    { "jobId": "job_0011", "customerId": "cust_0001", "jobValue": 47500 },
+    { "jobId": "job_0012", "customerId": "cust_0001", "jobValue": 47500 },
+    { "jobId": "job_0013", "customerId": "cust_0004", "jobValue": 50000 }
+  ],
+  "completionReports": [
+    {
+      "jobRef": "job_0001",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    },
+    {
+      "jobRef": "job_0003",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    },
+    {
+      "jobRef": "job_0005",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    },
+    {
+      "jobRef": "job_0007",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    },
+    {
+      "jobRef": "job_0009",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    },
+    {
+      "jobRef": "job_0011",
+      "quantity": 100,
+      "paperCost": 11111,
+      "inkCost": 22222
+    }
+  ],
+  "postageCosts": {
+    "1st Class Postage": 100,
+    "2nd Class Postage": 80
+  }
+}
