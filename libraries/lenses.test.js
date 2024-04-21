@@ -39,12 +39,22 @@ describe('Lenses', () => {
   });
 
   describe('lensFn', () => {
-    const testFn = jest.fn(_ => `_${_}`);
+    let testFn;
 
-    it('can access a top-level property', () => {
+    beforeEach(() => {
+      testFn = jest.fn(_ => `_${_}`);
+    });
+
+    it('can executes the function when a property is found', () => {
       expect(testFn).toHaveBeenCalledTimes(0);
       expect(lensFn(testFn, 'a')(testData)).toBe('_b');
       expect(testFn).toHaveBeenCalledTimes(1);
+    });
+
+    it('can bypasses the function when property is not found', () => {
+      expect(testFn).toHaveBeenCalledTimes(0);
+      expect(lensFn(testFn, 'x')(testData)).not.toBeDefined();
+      expect(testFn).toHaveBeenCalledTimes(0);
     });
   });
 });

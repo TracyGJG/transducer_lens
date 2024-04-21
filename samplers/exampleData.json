@@ -3,17 +3,17 @@
     {
       "customerId": "cust_0001",
       "companyName": "Customer One",
-      "deploymentPreference": "1st Class Postage"
+      "dispatchPreference": "1st Class Postage"
     },
     {
       "customerId": "cust_0002",
       "companyName": "Customer Two",
-      "deploymentPreference": "2nd Class Postage"
+      "dispatchPreference": "2nd Class Postage"
     },
     {
       "customerId": "cust_0003",
       "companyName": "Customer Three",
-      "deploymentPreference": "Collection"
+      "dispatchPreference": "Collection"
     }
   ],
   "printJobs": [
@@ -73,6 +73,7 @@
   ],
   "postageCosts": {
     "1st Class Postage": 100,
-    "2nd Class Postage": 80
+    "2nd Class Postage": 80,
+    "Collection": 0
   }
 }

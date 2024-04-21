@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1713714978259" clover="3.2.0">
+  <project timestamp="1713714978259" name="All files">
+    <metrics statements="42" coveredstatements="42" conditionals="16" coveredconditionals="16" methods="38" coveredmethods="38" elements="96" coveredelements="96" complexity="0" loc="42" ncloc="42" packages="1" files="3" classes="3"/>
+    <file name="lenses.js" path="D:\Development\SCISYS\GC-AW\transducer_lens\libraries\lenses.js">
+      <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="7" coveredmethods="7"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="3" type="stmt"/>
+      <line num="6" count="8" type="stmt"/>
+      <line num="9" count="15" type="stmt"/>
+      <line num="10" count="8" type="stmt"/>
+      <line num="11" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="14" count="8" type="stmt"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="19" count="2" type="stmt"/>
+      <line num="20" count="2" type="stmt"/>
+      <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="22" count="1" type="stmt"/>
+    </file>
+    <file name="transducer.js" path="D:\Development\SCISYS\GC-AW\transducer_lens\libraries\transducer.js">
+      <metrics statements="20" coveredstatements="20" conditionals="7" coveredconditionals="7" methods="21" coveredmethods="21"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="5" count="4" type="stmt"/>
+      <line num="9" count="2" type="stmt"/>
+      <line num="10" count="2" type="stmt"/>
+      <line num="11" count="5" type="stmt"/>
+      <line num="12" count="4" type="stmt"/>
+      <line num="16" count="5" type="stmt"/>
+      <line num="17" count="3" type="stmt"/>
+      <line num="18" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="20" count="5" type="stmt"/>
+      <line num="21" count="5" type="stmt"/>
+      <line num="22" count="8" type="stmt"/>
+      <line num="23" count="7" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="5" type="stmt"/>
+      <line num="31" count="8" type="stmt"/>
+      <line num="32" count="9" type="cond" truecount="2" falsecount="0"/>
+      <line num="33" count="7" type="stmt"/>
+      <line num="38" count="5" type="stmt"/>
+      <line num="39" count="3" type="stmt"/>
+      <line num="41" count="4" type="stmt"/>
+    </file>
+    <file name="utils.js" path="D:\Development\SCISYS\GC-AW\transducer_lens\libraries\utils.js">
+      <metrics statements="9" coveredstatements="9" conditionals="5" coveredconditionals="5" methods="10" coveredmethods="10"/>
+      <line num="2" count="4" type="stmt"/>
+      <line num="3" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="7" count="18" type="stmt"/>
+      <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
+      <line num="11" count="4" type="stmt"/>
+      <line num="12" count="2" type="stmt"/>
+      <line num="13" count="2" type="stmt"/>
+      <line num="14" count="2" type="stmt"/>
+      <line num="19" count="9" type="stmt"/>
+    </file>
+  </project>
+</coverage>

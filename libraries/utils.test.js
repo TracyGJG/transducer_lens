@@ -3,7 +3,13 @@ import { expect, jest, test } from '@jest/globals';
 import { append, compose, logger, range } from './utils.js';
 
 describe('Utils', () => {
-  test('append', () => {
+  const logSpy = jest.spyOn(console, 'log');
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  test('append (no items)', () => {
     const testArray = [];
     const appendFunction = append(testArray);
 
@@ -15,6 +21,17 @@ describe('Utils', () => {
 
     expect(testArray.length).toBe(1);
     expect(testArray[0]).toBe('Hello, World!');
+  });
+
+  test('append (single item)', () => {
+    const testArray = [];
+    const result = append(testArray, 'item1');
+
+    expect(testArray.length).toBe(1);
+    expect(typeof result).toBe('object');
+
+    expect(testArray.length).toBe(1);
+    expect(result).toEqual(['item1']);
   });
 
   test('compose', () => {
@@ -33,8 +50,7 @@ describe('Utils', () => {
     expect(testArray).toEqual(['World! _', 'Hello, _']);
   });
 
-  test('logger', () => {
-    const logSpy = jest.spyOn(console, 'log');
+  test('logger (with function)', () => {
     const defaultLogger = logger('test');
     expect(typeof defaultLogger).toBe('function');
 
@@ -46,6 +62,20 @@ describe('Utils', () => {
     expect(result).toBe('Hello, World!');
     expect(logSpy).toHaveBeenCalledTimes(1);
     expect(logSpy).toHaveBeenCalledWith('\ttest: "Hello" => "Hello, World!"');
+  });
+
+  test('logger (with default)', () => {
+    const defaultLogger = logger('test');
+    expect(typeof defaultLogger).toBe('function');
+
+    const loggerFn = logger('test');
+    expect(typeof loggerFn).toBe('function');
+
+    expect(logSpy).toHaveBeenCalledTimes(0);
+    const result = loggerFn('Hello');
+    expect(result).toBe('Hello');
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith('\ttest: "Hello" => "Hello"');
   });
 
   test('range', () => {
