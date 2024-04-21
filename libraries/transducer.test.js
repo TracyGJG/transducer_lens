@@ -1,5 +1,7 @@
 import { expect, jest, test } from '@jest/globals';
 
+import { append } from './utils.js';
+
 import {
   composeTransducers,
   conditional,
@@ -45,6 +47,27 @@ describe('transducers', () => {
     it('selects the second mapper when less than 30', () => {
       const result = make42([666], 21);
       expect(result).toEqual([666, 42]);
+    });
+
+    it('throws and exception when not transformation are defined', () => {
+      const exceptionTest = conditional(Boolean);
+
+      expect(exceptionTest).toThrow('conditional: No transformations defined.');
+    });
+
+    it('returns an unchanged array when no index match is found', () => {
+      const result = conditional(() => -1)(append)(conj)(['Hello'], 'World');
+
+      expect(result).toEqual(['Hello']);
+    });
+
+    it('throws and exception when there are not transformation are defined', () => {
+      const exceptionTest = () =>
+        conditional(() => 1)(append)(conj)(['Hello'], 'World');
+
+      expect(exceptionTest).toThrow(
+        'conditional: Transform Index exceeds options.'
+      );
     });
   });
 

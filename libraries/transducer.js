@@ -6,10 +6,18 @@ export function composeTransducers(...transducerFns) {
 }
 
 export function conditional(conditionFn) {
-  return (...transformFns) =>
-    rf =>
-    (acc, val) =>
-      rf(acc, transformFns[+conditionFn(val)](val));
+  return (...transformFns) => {
+    if (!transformFns.length)
+      throw Error('conditional: No transformations defined.');
+    return rf => (acc, val) => {
+      const transformIndex = +conditionFn(val);
+      if (transformIndex >= transformFns.length)
+        throw Error('conditional: Transform Index exceeds options.');
+      return transformIndex < 0
+        ? acc
+        : rf(acc, transformFns[transformIndex](val));
+    };
+  };
 }
 
 export function extract(extractArray, retainOriginal = false) {

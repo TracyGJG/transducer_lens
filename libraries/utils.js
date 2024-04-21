@@ -10,7 +10,9 @@ export function compose(...funcs) {
 export function logger(name, func = _ => _) {
   return x => {
     const y = func(x);
-    console.log(`\t${name}: ${JSON.stringify(x)} => ${JSON.stringify(y)}`);
+    console.log(
+      `\t${name}: ${JSON.stringify(x)} \n\t\t=> ${JSON.stringify(y)}`
+    );
     return y;
   };
 }

@@ -61,7 +61,9 @@ describe('Utils', () => {
     const result = loggerFn('Hello');
     expect(result).toBe('Hello, World!');
     expect(logSpy).toHaveBeenCalledTimes(1);
-    expect(logSpy).toHaveBeenCalledWith('\ttest: "Hello" => "Hello, World!"');
+    expect(logSpy).toHaveBeenCalledWith(
+      '\ttest: "Hello" \n\t\t=> "Hello, World!"'
+    );
   });
 
   test('logger (with default)', () => {
@@ -75,7 +77,7 @@ describe('Utils', () => {
     const result = loggerFn('Hello');
     expect(result).toBe('Hello');
     expect(logSpy).toHaveBeenCalledTimes(1);
-    expect(logSpy).toHaveBeenCalledWith('\ttest: "Hello" => "Hello"');
+    expect(logSpy).toHaveBeenCalledWith('\ttest: "Hello" \n\t\t=> "Hello"');
   });
 
   test('range', () => {
