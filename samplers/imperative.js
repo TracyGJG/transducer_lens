@@ -22,22 +22,53 @@ const processFahrenheit = ({ numeric }) => ({
 
 // ==========================================================
 
-const inputData = ['0°C', 'Invalid String', '-40°F', '-273.15K', '100°C'];
+const inputData = [
+  '0°C',
+  '',
+  'Invalid String',
+  0,
+  '-40°F',
+  null,
+  '273.15K',
+  false,
+  '100°C',
+];
+
+console.log('\ninputData', inputData);
 
 // ==========================================================
 
-const validTemperatures = inputData.filter(isTemperatureString);
-console.log(validTemperatures);
+const invalidInputData = inputData.filter(datum => !Boolean(datum));
+console.log('\ninvalidInputData', invalidInputData);
 
-const invalidTemperatures = inputData.filter(
+const validInputData = inputData.filter(datum => Boolean(datum));
+console.log('\nvalidInputData', validInputData);
+
+const invalidTemperatures = validInputData.filter(
   temp => !isTemperatureString(temp)
 );
-console.log(invalidTemperatures);
+console.log('\ninvalidTemperatures', invalidTemperatures);
 
-const temperatureSimpleObjects = validTemperatures.map(convertIntoObject);
+const validTemperaturesStrings = validInputData.filter(isTemperatureString);
+console.log('\nvalidTemperaturesStrings', validTemperaturesStrings);
+
+const temperatureSimpleObjects =
+  validTemperaturesStrings.map(convertIntoObject);
 console.table(temperatureSimpleObjects);
 
 const temperatureComplexObjects = temperatureSimpleObjects.map(tempObj =>
   isCelsius(tempObj) ? processCelsius(tempObj) : processFahrenheit(tempObj)
 );
 console.table(temperatureComplexObjects);
+
+// ==========================================================
+
+console.table(
+  inputData
+    .filter(datum => Boolean(datum))
+    .filter(isTemperatureString)
+    .map(convertIntoObject)
+    .map(tempObj =>
+      isCelsius(tempObj) ? processCelsius(tempObj) : processFahrenheit(tempObj)
+    )
+);

@@ -19,8 +19,8 @@ export function composeTransducers(...transducerFns) {
 
 // predicates
 const isTruthy = Boolean;
-const isTemperatureString = inputString =>
-  /^-?\d{1,4}(\.\d\d?)?°[CF]$/.exec(inputString);
+const isNotTemperatureString = inputString =>
+  !/^-?\d{1,4}(\.\d\d?)?°[CF]$/.exec(inputString);
 const isCelsius = objTemperature => objTemperature.unit === 'C';
 
 // transforms
@@ -49,7 +49,7 @@ const inputData = [
   0,
   '-40°F',
   null,
-  '-273.15K',
+  '273.15K',
   false,
   '100°C',
 ];
@@ -60,7 +60,7 @@ const invalidTemperatures = [];
 const transducer = composeTransducers(
   filter(logger('isTruthy', isTruthy)),
   extract(invalidTemperatures)(
-    logger('isTemperatureString', isTemperatureString)
+    logger('isTemperatureString', isNotTemperatureString)
   ),
   mapper(logger('convertIntoObject', convertIntoObject)),
   conditional(isCelsius)(
