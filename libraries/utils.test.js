@@ -37,8 +37,8 @@ describe('Utils', () => {
   test('compose', () => {
     const testArray = [];
 
-    const hello = _ => (testArray.push(`Hello, ${_}`), _);
-    const world = _ => (testArray.push(`World! ${_}`), _);
+    const hello = val => (testArray.push(`Hello, ${val}`), val);
+    const world = val => (testArray.push(`World! ${val}`), val);
 
     expect(testArray.length).toBe(0);
     const combined = compose(hello, world);
@@ -54,7 +54,7 @@ describe('Utils', () => {
     const defaultLogger = logger('test');
     expect(typeof defaultLogger).toBe('function');
 
-    const loggerFn = logger('test', _ => `${_}, World!`);
+    const loggerFn = logger('test', val => `${val}, World!`);
     expect(typeof loggerFn).toBe('function');
 
     expect(logSpy).toHaveBeenCalledTimes(0);

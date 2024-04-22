@@ -40,7 +40,8 @@ const itemLookup = (dataList, primaryProp, subject, secondaryProp) =>
   );
 
 // predicates
-const hasMissingCustomer = _ => __ => !listLookup('customerId')(_)(__);
+const hasMissingCustomer = prop => data =>
+  !listLookup('customerId')(prop)(data);
 const isComplete = listLookup('jobRef', 'jobId');
 const mapDispatchPreference = _postageCosts => job =>
   Object.keys(_postageCosts).findIndex(

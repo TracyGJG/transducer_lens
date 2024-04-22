@@ -42,7 +42,7 @@ describe('Lenses', () => {
     let testFn;
 
     beforeEach(() => {
-      testFn = jest.fn(_ => `_${_}`);
+      testFn = jest.fn(x => `_${x}`);
     });
 
     it('can executes the function when a property is found', () => {

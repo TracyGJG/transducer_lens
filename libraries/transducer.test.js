@@ -11,10 +11,10 @@ import {
 } from './transducer.js';
 
 describe('transducers', () => {
-  const lessThan = __ => _ => _ < __;
-  const greaterThan = __ => _ => _ > __;
-  const plus = __ => _ => _ + __;
-  const times = __ => _ => _ * __;
+  const lessThan = y => x => x < y;
+  const greaterThan = y => x => x > y;
+  const plus = y => x => x + y;
+  const times = y => x => x * y;
 
   const conj = (acc, val) => [...acc, val];
 

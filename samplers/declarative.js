@@ -9,9 +9,9 @@ import {
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);
   return xs =>
-    xs.reduce((__, _, ___) => {
-      console.log(`transduce[${___}]:`, _);
-      return xf(append)(__, _);
+    xs.reduce((acc, val, arr) => {
+      console.log(`transduce[${arr}]:`, val);
+      return xf(append)(acc, val);
     }, []);
 }
 
