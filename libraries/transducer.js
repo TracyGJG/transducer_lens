@@ -2,7 +2,7 @@ import { append, compose } from './utils.js';
 
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);
-  return xs => xs.reduce((__, _, ___) => xf(append)(__, _), []);
+  return xs => xs.reduce((acc, val) => xf(append)(acc, val), []);
 }
 
 export function conditional(conditionFn) {
