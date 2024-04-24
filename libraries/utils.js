@@ -1,6 +1,6 @@
-export function append(arr, ...item) {
-  const _append = _item => (arr.push(_item), arr);
-  return item.length ? _append(item[0]) : _append;
+export function append(arr, ...items) {
+  const _append = (..._items) => (arr.push(..._items), arr);
+  return items.length ? _append(...items) : _append;
 }
 
 export function compose(...funcs) {

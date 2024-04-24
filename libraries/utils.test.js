@@ -16,11 +16,9 @@ describe('Utils', () => {
     expect(testArray.length).toBe(0);
     expect(typeof appendFunction).toBe('function');
 
-    expect(testArray.length).toBe(0);
     appendFunction('Hello, World!');
-
     expect(testArray.length).toBe(1);
-    expect(testArray[0]).toBe('Hello, World!');
+    expect(testArray).toEqual(['Hello, World!']);
   });
 
   test('append (single item)', () => {
@@ -29,9 +27,16 @@ describe('Utils', () => {
 
     expect(testArray.length).toBe(1);
     expect(typeof result).toBe('object');
-
-    expect(testArray.length).toBe(1);
     expect(result).toEqual(['item1']);
+  });
+
+  test('append (multiple items)', () => {
+    const testArray = [];
+    const result = append(testArray, 'item1', 'item2', 'item3');
+
+    expect(testArray.length).toBe(3);
+    expect(typeof result).toBe('object');
+    expect(result).toEqual(['item1', 'item2', 'item3']);
   });
 
   test('compose', () => {
