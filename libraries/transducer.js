@@ -49,3 +49,7 @@ export function mapper(...transformFns) {
       transformFns.reduce((x, func) => func(x), val)
     );
 }
+
+export function flatten(...transformFns) {
+  return rf => (acc, val) => rf(acc, ...transformFns.flatMap(fn => fn(val)));
+}

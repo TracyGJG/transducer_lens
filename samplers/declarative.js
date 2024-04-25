@@ -3,6 +3,7 @@ import {
   conditional,
   extract,
   filter,
+  flatten,
   mapper,
 } from '../libraries/transducer.js';
 
@@ -66,13 +67,17 @@ const transducer = composeTransducers(
   conditional(isCelsius)(
     logger('processFahrenheit:', processFahrenheit),
     logger('processCelsius:', processCelsius)
+  ),
+  flatten(
+    logger('celsius string', ({ celsius }) => `${celsius}° celsius`),
+    logger('fahrenheit string', ({ fahrenheit }) => `${fahrenheit}° fahrenheit`)
   )
 );
 
 // ==========================================================
 
-const temperatureComplexObjects = transducer(inputData);
-
+const temperatureComplexObjects = transducer(inputData).map(_ => `_${_}`);
 console.log('\ninvalidTemperatures:', invalidTemperatures);
 
 console.table(temperatureComplexObjects);
+console.log(temperatureComplexObjects);
