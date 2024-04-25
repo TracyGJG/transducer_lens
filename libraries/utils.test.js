@@ -1,6 +1,6 @@
 import { expect, jest, test } from '@jest/globals';
 
-import { append, compose, logger, range } from './utils.js';
+import { append, compose, logger, pipe, range } from './utils.js';
 
 describe('Utils', () => {
   const logSpy = jest.spyOn(console, 'log');
@@ -40,19 +40,35 @@ describe('Utils', () => {
   });
 
   test('compose', () => {
-    const testArray = [];
+    const alpha = x => x + 1;
+    const beta = x => x * 3;
 
-    const hello = val => (testArray.push(`Hello, ${val}`), val);
-    const world = val => (testArray.push(`World! ${val}`), val);
+    const gamma = compose(alpha, beta);
+    const delta = compose(beta, alpha);
 
-    expect(testArray.length).toBe(0);
-    const combined = compose(hello, world);
+    expect(gamma(3)).toBe(alpha(beta(3)));
+    expect(delta(3)).toBe(beta(alpha(3)));
+  });
 
-    expect(testArray.length).toBe(0);
-    combined('_');
+  test('pipe', () => {
+    const alpha = x => x + 1;
+    const beta = x => x * 3;
 
-    expect(testArray.length).toBe(2);
-    expect(testArray).toEqual(['World! _', 'Hello, _']);
+    const gamma = pipe(alpha, beta);
+    const delta = pipe(beta, alpha);
+
+    expect(gamma(3)).toBe(
+      (x => {
+        const y = alpha(x);
+        return beta(y);
+      })(3)
+    );
+    expect(delta(3)).toBe(
+      (x => {
+        const y = beta(x);
+        return alpha(y);
+      })(3)
+    );
   });
 
   test('logger (with function)', () => {

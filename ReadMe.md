@@ -38,6 +38,7 @@ The project is broken down into three folders:
   - **append** is a _curried_ function that can be called with two arguments either separately (in subsequent calls) or together in a single call. The first parameter is the array to be appended with the appended array returned. The additional parameters (one or more) are added to the end of the initial array.
   - **compose** is a utility to combine multiple functions into one.
   - **logger** is a debugging tool to output the progres through the array processing.
+  - **pipe** is an alternative to **compose** in that is also combines functions but in the opposite (reading) order.
   - **range** is an array generator function, used to produce test data.
 
 **samplers**

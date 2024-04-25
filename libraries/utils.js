@@ -7,6 +7,10 @@ export function compose(...funcs) {
   return x => funcs.reduceRight((x, f) => f(x), x);
 }
 
+export function pipe(...funcs) {
+  return x => funcs.reduce((x, f) => f(x), x);
+}
+
 export function logger(name, func = val => val) {
   return x => {
     const y = func(x);
