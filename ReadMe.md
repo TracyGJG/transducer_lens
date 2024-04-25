@@ -45,7 +45,8 @@ The project is broken down into three folders:
 - imperative: An example solved using conventional Array methods but incuring multiple passes over the array.
 - declarative: The same example problem as for _imperative_ but resolved using transducers.
 - exampleData: A collection of several datesets, in JSON format, used to in the exampleSummary demonstration.
-- exampleSummary: An example with logging to demonstrate consolidating data from several sources (arrays and an object) using the transducer approach
+- exampleSummary: An example with logging to demonstrate consolidating data from several sources (arrays and an object) using the transducer approach.
+- lensDemo: Demonstrates the _lens_ and _lensFn_ function as described below.
 
 ## Lenses
 
@@ -60,14 +61,14 @@ For example, if we have an object as follows:
   alpha: 'beta',
   gamma: {
     'delta': 'epsilon',
-    'zeta eta': 'theta
+    'zeta eta': 'theta',
   },
   iota: [
     'kappa',
     {
-      lambda: 'mu'
-    }
-  ]
+      lambda: 'mu',
+    },
+  ],
 }
 ```
 
