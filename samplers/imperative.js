@@ -1,63 +1,46 @@
-// predicates
-const isTemperatureString = inputString =>
-  /^-?\d{1,4}(\.\d\d?)?°[CF]$/.exec(inputString);
-const isCelsius = objTemperature => objTemperature.unit === 'C';
+import { logger, not } from '../libraries/utils.js';
 
-// transforms
-const convertIntoObject = validString => {
-  const [numeric, unit] = validString.split(/°/);
-  return {
-    numeric,
-    unit,
-  };
-};
-const processCelsius = ({ numeric }) => ({
-  celsius: +numeric,
-  fahrenheit: (+numeric / 5) * 9 + 32,
-});
-const processFahrenheit = ({ numeric }) => ({
-  celsius: ((+numeric - 32) / 9) * 5,
-  fahrenheit: +numeric,
-});
+import inputData from './temperatures.json' with { type: 'json' };
+
+import {
+  isTruthy,
+  isTemperatureString,
+  isCelsius,
+  convertIntoObject,
+  processCelsius,
+  processFahrenheit
+} from './exampleOne.js';
 
 // ==========================================================
-
-const inputData = [
-  '0°C',
-  '',
-  'Invalid String',
-  0,
-  '-40°F',
-  null,
-  '273.15K',
-  false,
-  '100°C',
-];
 
 console.log('\ninputData', inputData);
 
-// ==========================================================
-
-const invalidInputData = inputData.filter(datum => !Boolean(datum));
-console.log('\ninvalidInputData', invalidInputData);
-
-const validInputData = inputData.filter(datum => Boolean(datum));
+// Step 1
+const validInputData = inputData.filter(isTruthy);
 console.log('\nvalidInputData', validInputData);
 
+// Step 2a
 const invalidTemperatures = validInputData.filter(
-  temp => !isTemperatureString(temp)
+  not(isTemperatureString)
 );
 console.log('\ninvalidTemperatures', invalidTemperatures);
 
-const validTemperaturesStrings = validInputData.filter(isTemperatureString);
-console.log('\nvalidTemperaturesStrings', validTemperaturesStrings);
+// Step 2b
+const validTemperatures = validInputData.filter(isTemperatureString);
+console.log('\nvalidTemperatures', validTemperatures);
 
+// Step 3
 const temperatureSimpleObjects =
-  validTemperaturesStrings.map(convertIntoObject);
+  validTemperatures.map(convertIntoObject);
 console.table(temperatureSimpleObjects);
 
+// Step4
 const temperatureComplexObjects = temperatureSimpleObjects.map(tempObj =>
-  isCelsius(tempObj) ? processCelsius(tempObj) : processFahrenheit(tempObj)
+  logger('isCelsius', isCelsius)(tempObj) ? 
+    // Step 4a
+    logger('processCelsius', processCelsius)(tempObj) : 
+    // Step 4b
+    logger('processFahrenheit', processFahrenheit)(tempObj)
 );
 console.table(temperatureComplexObjects);
 
@@ -65,10 +48,12 @@ console.table(temperatureComplexObjects);
 
 console.table(
   inputData
-    .filter(datum => Boolean(datum))
-    .filter(isTemperatureString)
-    .map(convertIntoObject)
+    .filter(logger('isTruthy', isTruthy))
+    .filter(logger('isTemperatureString', isTemperatureString))
+    .map(logger('convertIntoObject', convertIntoObject))
     .map(tempObj =>
-      isCelsius(tempObj) ? processCelsius(tempObj) : processFahrenheit(tempObj)
+      logger('isCelsius', isCelsius)(tempObj) ? 
+      logger('processCelsius', processCelsius)(tempObj) : 
+      logger('processFahrenheit', processFahrenheit)(tempObj)
     )
 );

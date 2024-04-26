@@ -1,6 +1,6 @@
 import { expect, jest, test } from '@jest/globals';
 
-import { append, compose, logger, pipe, range } from './utils.js';
+import { append, compose, logger, not, pipe, range } from './utils.js';
 
 describe('Utils', () => {
   const logSpy = jest.spyOn(console, 'log');
@@ -105,5 +105,14 @@ describe('Utils', () => {
     expect(range(3)).toEqual([0, 1, 2]);
     expect(range(3, 3)).toEqual([3, 4, 5]);
     expect(range(3, 3, 3)).toEqual([3, 6, 9]);
+  });
+
+  test('not', () => {
+    const isTruthy = Boolean;
+
+    expect(isTruthy(0)).toStrictEqual(false);
+    expect(isTruthy(1)).toStrictEqual(true);
+    expect(not(isTruthy)(0)).toStrictEqual(true);
+    expect(not(isTruthy)(1)).toStrictEqual(false);
   });
 });

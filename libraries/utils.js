@@ -24,3 +24,7 @@ export function logger(name, func = val => val) {
 export function range(max, min = 0, step = 1) {
   return Array.from({ length: max }, (_, i) => min + i * step);
 }
+
+export function not(predicateFn) {
+  return datum => !predicateFn(datum);
+}

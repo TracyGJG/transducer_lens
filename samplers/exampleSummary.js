@@ -1,4 +1,4 @@
-import testData from './exampleData.json' assert { type: 'json' };
+import testData from './exampleData.json' with { type: 'json' };
 
 import { append, compose, logger } from '../libraries/utils.js';
 import {

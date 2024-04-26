@@ -1,11 +1,23 @@
-import { append, compose, logger } from '../libraries/utils.js';
+import { append, compose, logger, not } from '../libraries/utils.js';
 import {
   conditional,
   extract,
   filter,
-  flatten,
   mapper,
 } from '../libraries/transducer.js';
+
+import inputData from './temperatures.json' with { type: 'json' };
+
+import {
+  isTruthy,
+  isTemperatureString,
+  isCelsius,
+  convertIntoObject,
+  processCelsius,
+  processFahrenheit
+} from './exampleOne.js';
+
+// ==========================================================
 
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);
@@ -18,65 +30,29 @@ export function composeTransducers(...transducerFns) {
 
 // ==========================================================
 
-// predicates
-const isTruthy = Boolean;
-const isNotTemperatureString = inputString =>
-  !/^-?\d{1,4}(\.\d\d?)?°[CF]$/.exec(inputString);
-const isCelsius = objTemperature => objTemperature.unit === 'C';
-
-// transforms
-const convertIntoObject = validString => {
-  const [numeric, unit] = validString.split(/°/);
-  return {
-    numeric,
-    unit,
-  };
-};
-const processCelsius = ({ numeric }) => ({
-  celsius: +numeric,
-  fahrenheit: (+numeric / 5) * 9 + 32,
-});
-const processFahrenheit = ({ numeric }) => ({
-  celsius: ((+numeric - 32) / 9) * 5,
-  fahrenheit: +numeric,
-});
-
-// ==========================================================
-
-const inputData = [
-  '0°C',
-  '',
-  'Invalid String',
-  0,
-  '-40°F',
-  null,
-  '273.15K',
-  false,
-  '100°C',
-];
 const invalidTemperatures = [];
 
-// ==========================================================
-
 const transducer = composeTransducers(
+  // Step 1
   filter(logger('isTruthy', isTruthy)),
+  // Step 2
   extract(invalidTemperatures)(
-    logger('isTemperatureString', isNotTemperatureString)
+    logger('not(isTemperatureString)', not(isTemperatureString))
   ),
+  // Step 3
   mapper(logger('convertIntoObject', convertIntoObject)),
+  // Step 4
   conditional(isCelsius)(
+    // Step 4a
     logger('processFahrenheit:', processFahrenheit),
+    // Step 4b
     logger('processCelsius:', processCelsius)
-  ),
-  flatten(
-    logger('celsius string', ({ celsius }) => `${celsius}° celsius`),
-    logger('fahrenheit string', ({ fahrenheit }) => `${fahrenheit}° fahrenheit`)
   )
 );
 
 // ==========================================================
 
-const temperatureComplexObjects = transducer(inputData).map(_ => `_${_}`);
+const temperatureComplexObjects = transducer(inputData);
 console.log('\ninvalidTemperatures:', invalidTemperatures);
 
 console.table(temperatureComplexObjects);
