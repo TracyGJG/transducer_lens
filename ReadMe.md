@@ -46,6 +46,7 @@ The project is broken down into three folders:
   - **append** is a _curried_ function that can be called with two arguments either separately (in subsequent calls) or together in a single call. The first parameter is the array to be appended with the appended array returned. The additional parameters (one or more) are added to the end of the initial array.
   - **compose** is a utility to combine multiple functions into one.
   - **logger** is a debugging tool to output the progres through the array processing.
+  - **not** is a wrapper used to invert the output of a _predicate_ function.
   - **pipe** is an alternative to **compose** in that is also combines functions but in the opposite (reading) order.
   - **range** is an array generator function, used to produce test data.
 
@@ -53,6 +54,7 @@ The project is broken down into three folders:
 
 - lensDemo: Demonstrates the _lens_ and _lensFn_ function as described below.
 
+- exampleOne: is a collection of _prediate_ and transform* functions used to perform the process that is the subject of the example. The functions are used by both implementations (*imperative* and *declarative\*) without alteration.
 - imperative: An example solved using conventional Array methods but incuring multiple passes over the array.
 - declarative: The same example problem as for _imperative_ but resolved using transducers.
 - temperatures.json: A raw data file for the imperative and declarative examples.
@@ -171,20 +173,32 @@ Invalid strings: `[ 'Invalid String', '273.15K' ]`
 ]
 ```
 
-**imperative** In this example we will be using the `Array.map` and `Array.filter` methods to process the inputData. However, as we shall see, there are consequence from processing in this manner, that the _declarative_ approach overcomes.
+**imperative**
+
+In this example we will be using the `Array.map` and `Array.filter` methods to process the inputData. However, as we shall see, there are consequence from processing in this manner, that the _declarative_ approach overcomes.
 
 For each of the steps of the process (1-4) we need to travers an array. As a result of each traversal a new array will be produced. In addition, step 1 has to be run twice, onece to extract the invalid data for error reporting and again to isolate the valid data for further processing.
 
 | step | input                    | output                    |
 | ---- | ------------------------ | ------------------------- |
 | 1    | inputData                | validInputData            |
-| 2b   | validInputData           | validTemperaturesStrings  |
-| 3    | validTemperaturesStrings | temperatureSimpleObjects  |
+| 2a   | validInputData           | invalidTemperatures       |
+| 2b   | validInputData           | validTemperatures         |
+| 3    | validTemperatures        | temperatureSimpleObjects  |
 | 4    | temperatureSimpleObjects | temperatureComplexObjects |
 
-Step 2a was excluded from the above list as it was not part of the outlined process. Note, the output array from a step becomes the input for the next step.
+Note, the output array from a step becomes the input for the next step, with the exception of the last step and step 2a.
 
-_declarative_ version wraps the _predicate_
+**declarative**
+
+This implementation wraps the same _predicates_ and _transforms_ as the _imperative_ sampler but in this version we will wrap the functions in `logger` functions before converting them into _transducers_.
+
+As well as the `filter` and `mapper` _transducers_ we will also use the `extract` and `conditional` _transducers_. The specialised _transducers_ enables us to preserve a copy of the array items being filtered out of the original array to form a new array. They also enales us to be selective as to which _transform_ to be applied based on a _predicate_.
+
+**The take-away**
+
+In the _imperative_ solution we passed through 4 arrays, or 5 when we include the filter to capture the invalid temperature strings, and the items in the output array will have been through as many functions.
+Because the _predictes_ and _transforms_ functions are converted to _transducers_ and combined using the _composeTransducers_ function, the solution only passes through the array once.
 
 ---
 
