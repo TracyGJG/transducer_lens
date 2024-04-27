@@ -1,5 +1,3 @@
-import testData from './exampleData.json' with { type: 'json' };
-
 import { append, compose, logger } from '../libraries/utils.js';
 import {
   conditional,
@@ -8,25 +6,26 @@ import {
   mapper,
 } from '../libraries/transducer.js';
 
-export function composeTransducers(...transducerFns) {
+import testData from './exampleData.json' with { type: 'json' };
+
+function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);
   return xs =>
-    xs.reduce((__, _, ___) => {
-      console.log(`transduce[${___}]:`, _);
-      return xf(append)(__, _);
+    xs.reduce((arr, val, fnName) => {
+      console.log(`transduce[${fnName}]:`, val);
+      return xf(append)(arr, val);
     }, []);
 }
 
+// ==========================================================
+
 const { customers, printJobs, completionReports, postageCosts } = testData;
-const show_test_data = false;
 
 console.log('\nTest Data');
-if (show_test_data) {
   console.table(customers);
   console.table(printJobs);
   console.table(completionReports);
   console.table(postageCosts);
-}
 
 // ==========================================================
 
@@ -137,6 +136,7 @@ const transducer = composeTransducers(
 const printRunSummary = transducer(printJobs);
 
 console.log('\n%s', 'printRunSummary');
+console.table(printRunSummary);
 console.table(printRunSummary.reduce(summarise, {}));
 
 console.log('\n%s', 'Print Jobs without customers');
