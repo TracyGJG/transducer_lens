@@ -10,6 +10,12 @@ I have been familiar with the functional programming concept of lenses for years
 
 ## Terminology
 
+**Comparator** is a function used to compare two values in an array in order to determine how they should be arranged to sort the array. When the `sort` method is called on the array it calls the comparator with a pair of items (_A_, _B_) from the array to discover in which order they need to be arranged, as indicated by the return value.
+
+- A negative value indicates to order _A_ before _B_.
+- Zero indicates that _A_ and _B_ are the same so the order should be left unchanged.
+- Positive values indicate the order should be _A_ after _B_.
+
 **Declarative** can be considered to be an alternative style of processing to _imperative_. In the _declarative_ style, the process is defined in terms of what needs to be achieved and the data is passed through the process.
 
 **Imperative** is a style of processing that applies changes to data step by step. It is sometimes described as defining the process by how the changes are to be performed. It can be considered to be an alternative to the _declarative_ style of processing.
@@ -358,17 +364,13 @@ The output of the full process is too lengthy to be documented here so I suggest
 1. Each printJob is only processes once.
 2. Only those operations necessary are applied to each printJob.
 
+---
+
 ## Bonus - Recursive Sort
 
 Another diffrentiator of the Functional Programming style from imperative styles is the use of (dependence on) recursion in place of loops. A perfect example of this is how we can resolve multiple sort criteria using JS's `Array.sort` (or the new `Array.toSorted`) method(s).
 
-When the `sort` method is called on the array it calls the comparator with a pair of items (_A_, _B_) from the array to discover in which order they need to be arranged, as indicated by the return value.
-
-- A negative value indicates to order _A_ before _B_.
-- Zero indicates that _A_ and _B_ are the same so the order should be left unchanged.
-- Positive values indicate the order should be _A_ after _B_.
-
-When a value of zero is returned, if there are comparators remaining, the call is reissued (a recursive call) with the next comparator to perform a 'next-level' sort comparison. This continues until all comparators are exhausted or a non-zero value is returned.
+When a value of zero is returned by a comparator, if there are criteria remaining, the call is reissued (a recursive call) with the next criterion to perform a 'next-level' sort comparison. This continues until all criteria have been exhausted or a non-zero value is returned.
 
 The direction argument is used as a multiplier to modify the result of the comparator and potentially invert the sort order. If an adaptor function is supplied, it is used to convert the retrieved value before the comparison is performed.
 
