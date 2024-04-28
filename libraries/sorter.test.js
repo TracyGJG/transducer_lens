@@ -7,6 +7,11 @@ import sorter, { ASCENDING, DESCENDING } from './sorter.js';
 import testCases from './sorter.json';
 
 describe('sorter', () => {
+  test('direction constants', () => {
+    expect(ASCENDING).toBe(1);
+    expect(DESCENDING).toBe(-1);
+  });
+
   test('single numeric property (descending)', () => {
     const testData = testCases.map(rec => ({ ...rec, dob: new Date(rec.dob) }));
     const idLens = lens('id');

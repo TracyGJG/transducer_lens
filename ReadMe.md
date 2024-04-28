@@ -32,41 +32,61 @@ Initial exploration into transducers applied to an array of numbers (simple) and
 
 ### Libraries
 
-Three collections of functions along with complete unit tests.
+Four collections of functions along with complete unit tests.
 
 #### lenses
 
-**lens**: This function is used to produce a new function to locate a property in an object, supplied in a subsequent call, and return the properties value or _undefined_ if not found.
+**lens(propertyName)**: This function is used to produce a new function to locate a property in an object, supplied in a subsequent call, and return the properties value or _undefined_ if not found.
 
-**lensFn**: This is an enhancement of the basic lens function that takes as its first parameter a callback function. If the lens finds a value for the property in an object, the value and object are passed to the callback function.
+**lensFn(callback, propertyName)**: This is an enhancement of the basic lens function that takes as its first parameter a callback function. If the lens finds a value for the property in an object, the value and object are passed to the callback function.
+
+#### sorter
+
+**sorter(criteria, ...)**
+
+This function generates a sort comparator function that is composed of multiple nested comparator functions. It is called with one or more `criteria` objects that comprises the following properties:
+
+- lens: A function to extract a value from an object for a given property. See the `lens` function in the _utils_ section.
+- direction: Optional property that defined the order the sort is to be applied (default: ASCENDING). The ASCENDING and DESCENDING values are supplied by the _sorted_ module.
+- adaptor: Optional property for supplying a data converter for the value retreived by the lens (default: identity function `_ => _`).
+
+```
+{
+  lens: lens(_propertyName_),
+  direction?: DESCENDING|ASCENDING,
+  adaptor?: (_propertyValue_) => _convertedValue_
+}
+```
+
+The resultant function is passed as the argument to an `Array.sort` method. The function is used to access a series of comparator functions in order to arrange the order of objects in an array. Subsequent comparators are called when the values being compared are equal. See the Bonus section for more information.
 
 #### transducers
 
-**mapper** is a _wrapper_ function that takes one or more transformation functions and returns a single transducer.
+**mapper(transform, ...)** is a _wrapper_ function that takes one or more transformation functions and returns a single transducer.
 
-**filter** is another wrapper that takes aone or more predicate functions and returns a single transducer. Only objects that comply with all the predicates will remain in the output array.
+**filter(predicate, ...)** is another wrapper that takes aone or more predicate functions and returns a single transducer. Only objects that comply with all the predicates will remain in the output array.
 
-**extract** is a specialised form of filter function that takes an array into which objects from the source array are copied, and an optional flag (Boolean) indicating if objects are to be removed or retained in the source array. The initial function returns another function that takes multiple predicate functions.
+**extract(targetArray, retainnOriginal?)(predicate, ...)** is a specialised form of filter function that takes an array into which objects from the source array are copied, and an optional flag (Boolean) indicating if objects are to be removed or retained in the source array. The initial function returns another function that takes multiple predicate functions.
 
-**conditional** is another specialised form of the filter function that takes a conditional function in the initial call, with (ideally) two or more transformers in the subsequent call. The conditional function returns either a Boolean (predicate) or number (0+). The Boolean is converted into a number (false = 0, true = 1) that is used as an index into the collection (array) of transformers.
+**conditional(predicate|condition)(transform, ...)** is another specialised form of the filter function that takes a conditional function in the initial call, with (ideally) two or more transformers in the subsequent call. The conditional function returns either a Boolean (predicate) or number (0+). The Boolean is converted into a number (false = 0, true = 1) that is used as an index into the collection (array) of transformers.
 
-**composeTransducers** is a function for composing transducers into a single function. The resultant function takes an array of objects, applies the functions wrapped in the transducers to each object to produce (return) a new array.
+**composeTransducers(transducer, ...)** is a function for composing transducers into a single function. The resultant function takes an array of objects, applies the functions wrapped in the transducers to each object to produce (return) a new array.
 
-**flatten** is a wrapper of more than one transform function to which the input is passed to each. The output is an array of _defined_ values that is expanded and flattened into the output array. N.B. This function has to be the last in the sequence of transducers because it will change the structure of the output array.
+**flatten(transform, ...)** is a wrapper of more than one transform function to which the input is passed to each. The output is an array of _defined_ values that is expanded and flattened into the output array. N.B. This function has to be the last in the sequence of transducers because it will change the structure of the output array.
 
 #### utils
 
-**append** is a _curried_ function that can be called with two arguments either separately (in subsequent calls) or together in a single call. The first parameter is the array to be appended with the appended array returned. The additional parameters (one or more) are added to the end of the initial array.
+**append(array, item, ...** is a _curried_ function that can be called with two arguments either separately (in subsequent calls) or together in a single call. The first parameter is the array to be appended with the appended array returned. The additional parameters (one or more) are added to the end of the initial array.
 
-**compose** is a utility to combine multiple functions into one.
+**compose(transform, ...)** is a utility to combine multiple functions into one.
 
-**logger** is a debugging tool to output the progres through the array processing.
+**logger(functionName, function?)** is a debugging tool to output the progres through the array processing.
 
-**not** is a wrapper used to invert the output of a _predicate_ function.
+**not(predicateFunction)** is a wrapper used to invert the output of a _predicate_ function.
 
-**pipe** is an alternative to **compose** in that is also combines functions but in the opposite (reading) order.
+**pipe(transform, ...)** is an alternative to **compose** in that is also combines functions but in the opposite (reading) order.
 
-**range** is an array generator function, used to produce test data.
+**range(maximum, minimum?, step?)** is an array generator function, used to produce test data.
 
 ### samplers
 
@@ -340,4 +360,16 @@ The output of the full process is too lengthy to be documented here so I suggest
 
 ## Bonus - Recursive Sort
 
-Another diffrentiator of the Functional Programming style from imperative styles is the use of recursion in place of loops. A perfect example of this is how we can resolve multiple sort criteria using JS's `Array.sort` (or the ne `Array.sorted`) method(s).
+Another diffrentiator of the Functional Programming style from imperative styles is the use of (dependence on) recursion in place of loops. A perfect example of this is how we can resolve multiple sort criteria using JS's `Array.sort` (or the new `Array.toSorted`) method(s).
+
+When the `sort` method is called on the array it calls the comparator with a pair of items (_A_, _B_) from the array to discover in which order they need to be arranged, as indicated by the return value.
+
+- A negative value indicates to order _A_ before _B_.
+- Zero indicates that _A_ and _B_ are the same so the order should be left unchanged.
+- Positive values indicate the order should be _A_ after _B_.
+
+When a value of zero is returned, if there are comparators remaining, the call is reissued (a recursive call) with the next comparator to perform a 'next-level' sort comparison. This continues until all comparators are exhausted or a non-zero value is returned.
+
+The direction argument is used as a multiplier to modify the result of the comparator and potentially invert the sort order. If an adaptor function is supplied, it is used to convert the retrieved value before the comparison is performed.
+
+---
