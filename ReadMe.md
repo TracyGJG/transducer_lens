@@ -232,7 +232,7 @@ Invalid strings: `[ 'Invalid String', '273.15K' ]`
 ]
 ```
 
-#### imperative
+#### The Imperative way
 
 In this example we will be using the `Array.map` and `Array.filter` methods to process the inputData. However, as we shall see, there are consequence from processing in this manner, that the _declarative_ approach overcomes.
 
@@ -248,16 +248,16 @@ For each of the steps of the process (1-4) we need to travers an array. As a res
 
 Note, the output array from a step becomes the input for the next step, with the exception of the last step and step 2a.
 
-#### declarative
+#### The Declarative way
 
 This implementation wraps the same _predicates_ and _transforms_ as the _imperative_ sampler but in this version we will wrap the functions in `logger` functions before converting them into _transducers_.
 
 As well as the `filter` and `mapper` _transducers_ we will also use the `extract` and `conditional` _transducers_. The specialised _transducers_ enables us to preserve a copy of the array items being filtered out of the original array to form a new array. They also enales us to be selective as to which _transform_ to be applied based on a _predicate_.
 
-#### The take-away
+#### The Take-away
 
 In the _imperative_ solution we passed through 4 arrays, or 5 when we include the filter to capture the invalid temperature strings, and the items in the output array will have been through as many functions.
-Because the _predictes_ and _transforms_ functions are converted to _transducers_ and combined using the _composeTransducers_ function, the solution only passes through the array once.
+Because the _predictes_ and _transforms_ functions are converted to _transducers_ and combined using the `composeTransducers` function, the solution only passes through the array once.
 
 ---
 
@@ -328,7 +328,7 @@ In addition, we want to be made aware of print jobs for which the customer is ei
 
 5. Once the array has been processed with use a reducer function to consolidate the information into a summary.
 
-#### The Output
+#### The Product
 
 The output of the full process is too lengthy to be documented here so I suggest you try running the example yourself.
 
@@ -359,7 +359,7 @@ The output of the full process is too lengthy to be documented here so I suggest
 | 2 | 'job_0010' | '' | 50000 |
 | 3 | 'job_0013' | 'cust_0004' | 50000 |
 
-#### The take-away
+#### The Take-away
 
 1. Each printJob is only processes once.
 2. Only those operations necessary are applied to each printJob.
