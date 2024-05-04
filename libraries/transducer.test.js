@@ -1,4 +1,4 @@
-import { expect, jest, test } from '@jest/globals';
+import { expect } from '@jest/globals';
 
 import { append } from './utils.js';
 
@@ -11,10 +11,10 @@ import {
 } from './transducer.js';
 
 describe('transducers', () => {
-  const lessThan = y => x => x < y;
-  const greaterThan = y => x => x > y;
-  const plus = y => x => x + y;
-  const times = y => x => x * y;
+  const lessThan = (y) => (x) => x < y;
+  const greaterThan = (y) => (x) => x > y;
+  const plus = (y) => (x) => x + y;
+  const times = (y) => (x) => x * y;
 
   const conj = (acc, val) => [...acc, val];
 

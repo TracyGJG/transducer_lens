@@ -2,14 +2,14 @@ import { append, compose } from './utils.js';
 
 export function composeTransducers(...transducerFns) {
   const xf = compose(...transducerFns);
-  return xs => xs.reduce((acc, val) => xf(append)(acc, val), []);
+  return (xs) => xs.reduce((acc, val) => xf(append)(acc, val), []);
 }
 
 export function conditional(conditionFn) {
   return (...transformFns) => {
     if (!transformFns.length)
       throw Error('conditional: No transformations defined.');
-    return rf => (acc, val) => {
+    return (rf) => (acc, val) => {
       const transformIndex = +conditionFn(val);
       if (transformIndex >= transformFns.length)
         throw Error('conditional: Transform Index exceeds options.');
@@ -26,9 +26,9 @@ export function extract(extractArray, retainOriginal = false) {
     return retainOriginal ? rf(acc, val) : acc;
   };
   return (...predicateFns) =>
-    rf =>
+    (rf) =>
     (acc, val) => {
-      const result = predicateFns.some(func => func(val))
+      const result = predicateFns.some((func) => func(val))
         ? _extract(rf, acc, val)
         : rf(acc, val);
       return result;
@@ -36,20 +36,16 @@ export function extract(extractArray, retainOriginal = false) {
 }
 
 export function filter(...predicateFns) {
-  return rf => (acc, val) => {
-    const result = predicateFns.every(func => func(val)) ? rf(acc, val) : acc;
+  return (rf) => (acc, val) => {
+    const result = predicateFns.every((func) => func(val)) ? rf(acc, val) : acc;
     return result;
   };
 }
 
 export function mapper(...transformFns) {
-  return rf => (acc, val) =>
+  return (rf) => (acc, val) =>
     rf(
       acc,
       transformFns.reduce((x, func) => func(x), val)
     );
-}
-
-export function flatten(...transformFns) {
-  return rf => (acc, val) => rf(acc, ...transformFns.flatMap(fn => fn(val)));
 }

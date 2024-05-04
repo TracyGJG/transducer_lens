@@ -78,8 +78,6 @@ The resultant function is passed as the argument to an [Array.sort](https://deve
 
 **composeTransducers(transducer, ...)** is a function for composing transducers into a single function. The resultant function takes an array of objects, applies the functions wrapped in the transducers to each object to produce (return) a new array.
 
-**flatten(transform, ...)** is a wrapper of more than one transform function to which the input is passed to each. The output is an array of _defined_ values that is expanded and flattened into the output array. N.B. This function has to be the last in the sequence of transducers because it will change the structure of the output array.
-
 #### utils
 
 **append(array, item, ...** is a _curried_ function that can be called with two arguments either separately (in subsequent calls) or together in a single call. The first parameter is the array to be appended with the appended array returned. The additional parameters (one or more) are added to the end of the initial array.
@@ -325,8 +323,6 @@ In addition, we want to be made aware of print jobs for which the customer is ei
 
 4. We then calculate the postage cost according to the customer's preferred method of dispatch. This uses the `conditional` function with the _postageCosts_ data set.
 
-5. Once the array has been processed with use a reducer function to consolidate the information into a summary.
-
 #### The Product
 
 The output of the full process is too lengthy to be documented here so I suggest you try running the example yourself.
@@ -415,7 +411,20 @@ When _a == b_ the above formulae both return the Boolean value of false. The plu
 (+1 + 0) * DESCENDING = -1
 (0 + -1) * DESCENDING = +1
 ```
-
 When the result is 0 (i.e. _a == b_), this not only indicates the values are the same but further sort comparators might be required (if available).
+
+---
+
+## NB on importing JSON data
+
+The mechanism for [importing JSON data](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#browser_compatibility) via the JS `import` statement is currently (May 2024) in transition. Until recently the syntax used the `assert` keyword but this is being replaced by the `with` keyword.
+So,
+```
+import testData from './exampleData.json' assert { type: 'json' };
+```
+becomes
+```
+import testData from './exampleData.json' with { type: 'json' };
+```
 
 ---
