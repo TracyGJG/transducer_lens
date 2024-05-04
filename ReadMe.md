@@ -10,7 +10,7 @@ I have been familiar with the functional programming concept of lenses for years
 
 ## Terminology
 
-**Comparator** is a function used to compare two values in an array in order to determine how they should be arranged to sort the array. When the `sort` method is called on the array it calls the comparator with a pair of items (_A_, _B_) from the array to discover in which order they need to be arranged, as indicated by the return value.
+**Comparator** is a function used to compare two values in an array in order to determine how they should be arranged to sort the array. When the [sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) method is called on the array it calls the comparator with a pair of items (_A_, _B_) from the array to discover in which order they need to be arranged, as indicated by the return value.
 
 - A negative value indicates to order _A_ before _B_.
 - Zero indicates that _A_ and _B_ are the same so the order should be left unchanged.
@@ -24,7 +24,7 @@ I have been familiar with the functional programming concept of lenses for years
 
 **Reducer** is a function that combines two input values into one output value. It is often used with arrays where the first argument is a new array and the second argument is a value from the original array. In this case the output would be an extended new array.
 
-**Transform** is a function that takes a single argument from which a new value is created and output. This is the form of function expected by the `Array.map` method.
+**Transform** is a function that takes a single argument from which a new value is created and output. This is the form of function expected by the [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) method.
 
 ---
 
@@ -64,7 +64,7 @@ This function generates a sort comparator function that is composed of multiple 
 }
 ```
 
-The resultant function is passed as the argument to an `Array.sort` method. The function is used to access a series of comparator functions in order to arrange the order of objects in an array. Subsequent comparators are called when the values being compared are equal. See the Bonus section for more information.
+The resultant function is passed as the argument to an [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) method. The function is used to access a series of comparator functions in order to arrange the order of objects in an array. Subsequent comparators are called when the values being compared are equal. See the Bonus section for more information.
 
 #### transducers
 
@@ -106,8 +106,7 @@ The resultant function is passed as the argument to an `Array.sort` method. The 
 
 **imperative:** An example solved using conventional Array methods but incuring multiple passes over the array.
 
-**declarative:** The same example problem as for
-_imperative_ but resolved using transducers.
+**declarative:** The same example problem as for _imperative_ but resolved using transducers.
 
 **temperatures.json:** A raw data file for the imperative and declarative examples.
 
@@ -234,7 +233,7 @@ Invalid strings: `[ 'Invalid String', '273.15K' ]`
 
 #### The Imperative way
 
-In this example we will be using the `Array.map` and `Array.filter` methods to process the inputData. However, as we shall see, there are consequence from processing in this manner, that the _declarative_ approach overcomes.
+In this example we will be using the [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) and [Array.filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) methods to process the inputData. However, as we shall see, there are consequence from processing in this manner, that the _declarative_ approach overcomes.
 
 For each of the steps of the process (1-4) we need to travers an array. As a result of each traversal a new array will be produced. In addition, step 1 has to be run twice, onece to extract the invalid data for error reporting and again to isolate the valid data for further processing.
 
@@ -314,7 +313,7 @@ The _exampleData.json_ file contains the following data sets:
 
 #### The Process
 
-The general process involves combining the information from all four data sets to distil a list of completed print jobs with all associated costs. The processed array can then be reduced to a summary report with one entry for each cutomer.
+The general process involves combining the information from all four data sets to distil a list of completed print jobs with all associated costs. The processed array can then be reduced to a summary report with one entry for each customer.
 
 In addition, we want to be made aware of print jobs for which the customer is either not specificed or cannot be determined.
 
@@ -368,10 +367,55 @@ The output of the full process is too lengthy to be documented here so I suggest
 
 ## Bonus - Recursive Sort
 
-Another diffrentiator of the Functional Programming style from imperative styles is the use of (dependence on) recursion in place of loops. A perfect example of this is how we can resolve multiple sort criteria using JS's `Array.sort` (or the new `Array.toSorted`) method(s).
+Another diffrentiator of the Functional Programming style from imperative styles is the use of (dependence on) recursion in place of loops. A perfect example of this is how we can resolve multiple sort criteria using JS's [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) (or the new [Array.toSorted](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted)) method(s).
 
 When a value of zero is returned by a comparator, if there are criteria remaining, the call is reissued (a recursive call) with the next criterion to perform a 'next-level' sort comparison. This continues until all criteria have been exhausted or a non-zero value is returned.
 
 The direction argument is used as a multiplier to modify the result of the comparator and potentially invert the sort order. If an adaptor function is supplied, it is used to convert the retrieved value before the comparison is performed.
+
+### Sort comparator algorithm
+
+The textbook [sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) comparator looks something like:
+
+```
+function compareFn(a, b) {
+  if (a is less than b by some ordering criterion) {
+    return -1;
+  } else if (a is greater than b by the ordering criterion) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+```
+Since the introduction of the [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), the comparator is more often documented as follows.
+```
+const compareFn = (a, b) => a - b;
+```
+However, this does not lend itself to cascading the multiple sort comparators. So, I have prepared an alternative. It is based on the following simple comparator.
+```
+const compareFn = (direction) => (a, b) => direction * (+(a > b) + -(a < b));
+```
+The `direction` parameter assumes one of the following values.
+```
+const ASCENDING = 1;
+const DESCENDING = -1;
+```
+This approach employs partial application so instead of calling the sort method like `[].sort(compareFn)` we call the function to supply the direction, as follows `[].sort(compareFn(DESCENDING))`.
+
+The algorithm is arguably more complicated than it needs to be, but it is simple when it is broken down as follows.
+```
+(a > b) // returns the Boolean value of true when _b_ needs to come before _a_.
+(a < b) // returns the Boolean value of true when _a_ and _b_ are in sequence.
+```
+When _a == b_ the above formulae both return the Boolean value of false. The plus and minus symbols in front of the formulae convert the Boolean true values to the numbers `+1` and `-1`. The plus in between the formulae acts as a numeric _or_ operation so `+1` and `-1` persist when combined. The multiplication then provides a means of inverting the value according to the _direction_ parameter.
+```
+(+1 + 0) * ASCENDING = +1
+(0 + -1) * ASCENDING = -1
+(+1 + 0) * DESCENDING = -1
+(0 + -1) * DESCENDING = +1
+```
+
+When the result is 0 (i.e. _a == b_), this not only indicates the values are the same but further sort comparators might be required (if available).
 
 ---
