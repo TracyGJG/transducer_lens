@@ -2,9 +2,9 @@
 
 This project was insipired by the YouTube video [Transducers Explained | JavaScript by NWCalvank](https://youtu.be/SJjOp0X_MVA?si=GrsoymtAIMtBgsg8) that references ["Transducers" by Rich Hickey](https://youtu.be/6mTbuzafcII?si=HvsGJLSZNwlFDGOF).
 
-> Composition is to Functional Programming (FP) what Inheritance is to Object Orientation. However, the Gang of Four, in their book "Design Patterns: Elements of Reusable Object-Oriented Software" [ISBN 0-201-63361-2](), recommend [Favor "object composition" over "class inheritance"](https://en.wikipedia.org/wiki/Composition_over_inheritance)'. FP takes composition to a whole new level.
+> Composition is to Functional Programming (FP) what Inheritance is to Object Orientation. However, whilst the Gang of Four, in their book "Design Patterns: Elements of Reusable Object-Oriented Software" [ISBN 0-201-63361-2](), recommend [Favor "object composition" over "class inheritance"](https://en.wikipedia.org/wiki/Composition_over_inheritance)', FP takes composition to a whole new level.
 
-I have been familiar with the functional programming concept of lenses for years and made good use of them. Transducers are a more complicated concept but I was interested to see if they could be used to address a problem I had. This repository it the result of my investigation.
+I have been familiar with the functional programming concept of lenses for years and made good use of it. Transducers are a more complicated concept but I was interested to see if they could be used to address a problem I had. This repository is the result of my investigation.
 
 ---
 
@@ -161,17 +161,15 @@ The above example can be found in the _samplers_ folder.
 
 ## Transducers
 
-A transducer is a varient of the _reducer_ function that when called returns another transducer. Their purpose being to allow different function types such as _predicates_ and _transforms_ to be combined into a single _reducer_ function.
+A transducer is a varient of the _reducer_ function but, when called, it returns another transducer. Their purpose being to allow different function types such as _predicates_ and _transforms_ to be combined into a single _reducer_ function.
 
-In the _transducers_ library there are two helper functions that enable _predicate_ and _transform_ functions to be wrapped into _transducers_ (`filter` and `mapper` respectively). These can them be composed into a new function using the _composeTransducers_ function. The new function takes a single argument of an array and through a single pass of the array, applies each of the transducers, where possible. A _transform_ transducer will not be executed on an item if the preceeding _predicate_ transducer returned false.
+In the _transducers_ library there are two helper functions that enable _predicate_ and _transform_ functions to be wrapped into _transducers_ (`filter` and `mapper` respectively). These can them be composed into a new function using the `composeTransducers` function. The new function takes a single array argument and through a single pass of the array, applies each of the transducers, where possible. A _transform_ transducer will not be executed on an item if the preceeding _predicate_ transducer returned false.
 
 The _transducers_ library also contains the following functions:
 
 - `extract` works a bit like `filter` but uses the _predicates_ to identify those items to be copied to an _extracted array_, which is the first parameter in the first call. The second parameter is an optional Boolean flag to indicate if the item is to be retained in the source array (defaulted to false). The subsequent call excpects to be provided with one or more _predicate_ function that it will wrap into transducers.
 
 - `conditional` works a bit like `mapper` but only one (at most) of the _transforms_, supplied in the second call, will be performed, depending on the zero-based index output from the conditional function, supplied as the only argument of the first call.
-
-- `flatten` expands an item from the original array into multiple new items accordign to the supplied _transforms_. Because this will change the length of the array, it needs to be the last operation. This function is not demonstrated in the _samplers_ example.
 
 The following examples can be found in the _samplers_ folder
 
