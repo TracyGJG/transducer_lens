@@ -36,10 +36,8 @@ export function extract(extractArray, retainOriginal = false) {
 }
 
 export function filter(...predicateFns) {
-  return (rf) => (acc, val) => {
-    const result = predicateFns.every((func) => func(val)) ? rf(acc, val) : acc;
-    return result;
-  };
+  return (rf) => (acc, val) =>
+    predicateFns.every((func) => func(val)) ? rf(acc, val) : acc;
 }
 
 export function mapper(...transformFns) {
